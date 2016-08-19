@@ -1,17 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package common.utils;
 
 /**
  *
- * @autor asantos07
+ * @author asantos
  */
 public class MsgUtils {
-    
+
     public static char make2BytesChar(byte maisSig, byte menosSig) {
 
         int mais, menos;
@@ -20,7 +14,7 @@ public class MsgUtils {
         menos = (int) menosSig & 0xFF;
 
         return (char) (((mais << 8) | menos) & 0xFFFF);
-        
+
     }
 
     public static String byteVectorToString(byte[] ByteVector) {
@@ -31,14 +25,14 @@ public class MsgUtils {
         }
 
         String mountedString = "";
-        
+
         for (int i = 0; i < ByteVector.length; i += 2) {
             char character = make2BytesChar(ByteVector[i], ByteVector[i + 1]);
             mountedString += String.valueOf(character);
         }
-        
+
         return mountedString;
-        
+
     }
 
     public static byte[] stringToByteVector(String text) {
@@ -49,7 +43,7 @@ public class MsgUtils {
             tmpByte[i * 2 + 1] = (byte) (text.charAt(i) >> 0);
         }
         return tmpByte;
-        
+
     }
 
     public static int byteVectorToInteger(byte[] byteVector) {
@@ -61,22 +55,22 @@ public class MsgUtils {
 
         return (((int) byteVector[0] << 24) & 0xFF000000)
                 | (((int) byteVector[1] << 16) & 0x00FF0000)
-                | (((int) byteVector[2] << 8)  & 0x0000FF00)
-                | (((int) byteVector[3] << 0)  & 0x000000FF);
-        
+                | (((int) byteVector[2] << 8) & 0x0000FF00)
+                | (((int) byteVector[3] << 0) & 0x000000FF);
+
     }
 
     public static byte[] integerToByteVector(int integer) {
-        
+
         byte[] tmpBytes = new byte[4];
-        
+
         tmpBytes[0] = (byte) (integer >> 24);
         tmpBytes[1] = (byte) (integer >> 16);
         tmpBytes[2] = (byte) (integer >> 8);
         tmpBytes[3] = (byte) (integer >> 0);
-        
+
         return tmpBytes;
-        
+
     }
-    
+
 }
