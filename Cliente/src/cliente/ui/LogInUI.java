@@ -44,19 +44,19 @@ public class LogInUI extends javax.swing.JFrame {
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setResizable(false);
 
-        jLabel1.setText("Server IP:");
+        jLabel1.setText("IP:");
 
-        jServerIP.setText("0.0.0.0");
+        jServerIP.setText("127.0.0.1");
 
-        jLabel2.setText("Server Port:");
+        jLabel2.setText("Porta");
 
         jServerPort.setText("8885");
 
-        jLabel3.setText("Nickname:");
+        jLabel3.setText("Nick:");
 
-        jNickName.setText("Farmer");
+        jNickName.setText("Olivier");
 
-        jConnect.setText("Connect");
+        jConnect.setText("Conectar");
         jConnect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jConnectActionPerformed(evt);
@@ -149,17 +149,11 @@ public class LogInUI extends javax.swing.JFrame {
                 this.msgHandlerThread.setName("Message-Handler-Thread");
                 this.msgHandlerThread.start();
             }
-
             synchronized (msgHandler) {
-
                 try {
-
                     msgHandler.wait(); // Waits for the server answer...
-
                     if (!client.isIDSetted()) // If the client is not connected, throws the InvalidNickName exception.
                         throw new InvalidNickName();
-
-                    // If it gets here, creates a chat window and dispose the login window.
                     new ClientUI(this.client, this.msgHandler).setVisible(true);
                     this.dispose();
 

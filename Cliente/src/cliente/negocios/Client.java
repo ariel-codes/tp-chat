@@ -17,8 +17,6 @@ public class Client implements Runnable {
     
     private enum UserOptions {
 
-        HelpOption("/h"),
-        ChangeNickOption("/c"),
         PrivateMessageOption("/w"),
         InvalidOption("");
 
@@ -34,14 +32,6 @@ public class Client implements Runnable {
             UserOptions op = null;
 
             switch (s) {
-                case "/h":
-                    op = HelpOption;
-                    break;
-
-                case "/c":
-                    op = ChangeNickOption;
-                    break;
-
                 case "/w":
                     op = PrivateMessageOption;
                     break;
@@ -57,14 +47,6 @@ public class Client implements Runnable {
 
     };
 
-    public static final String INTERFACE_HELP = "To change the nick name go to Option->Change Nick.\n";
-    public static final String COMMAND_LINE_HELP =  "\n----------------------------------Usage---------------------------------\n" + 
-                                                    "\t[[/option] [parameters]] [Message]\n" + 
-                                                    "\n\twhere options include:\n" + 
-                                                    "\t/h\tShow this help message\n" + 
-                                                    "\t/c\tSend requisition to change your nickname\n" + 
-                                                    "\t/w\tSend private message to specified ID available in the client list\n" +
-                                                    "------------------------------------------------------------------------\n\n";
 
     private static final String REQUEST_SENT = "REQUEST SENT TO SERVER!\n";
 
@@ -281,15 +263,6 @@ public class Client implements Runnable {
             String[] splittedMsg = msg.split(" ",3);
 
             switch (UserOptions.getOption(splittedMsg[0])) {
-
-                case HelpOption:
-                    feedBack = COMMAND_LINE_HELP;
-                    break;
-
-                case ChangeNickOption:
-                    this.changeNickName(splittedMsg[1]);
-                    break;
-
                 case PrivateMessageOption:
 
                     int destinyID = this.ClientID;
@@ -303,15 +276,9 @@ public class Client implements Runnable {
                         this.sendMessage(splittedMsg[2], USER_ID, destinyID);
                     }
                     else {
-                        feedBack = "[ERROR]: This client is not online!\n";
+                        feedBack = "[ERRO]: CLIENTE INDISPONÍVEL\n";
                     }
-
                     break;
-
-                case InvalidOption:
-                    feedBack = COMMAND_LINE_HELP;
-                    break;
-
             }
 
         } else {
@@ -334,7 +301,7 @@ public class Client implements Runnable {
                 int checksum = this.input.readShort(); // Receive the checksum.
 
                 if (Message.getCheckSum(msg) == checksum) { // If the checksum is right...
-                    System.out.print("FROM " + this.ClientID + ": "); // Prints the message in the console.
+                    System.out.print("DE " + this.ClientID + ": "); // Prints the message in the console.
                     Message.printMessage(Message.getMsgAsByteVector(msg)); // ...
                     MessageHandler.addMessage(msg); // Then handle the message.
                     invalidChecksumStack = 0; // Resets the stack.
@@ -344,7 +311,7 @@ public class Client implements Runnable {
                 }
 
                 if ( invalidChecksumStack == 3 ) { // If it stacks the max, closes the chat.
-                    System.out.println("Invalid checksum stacked 3 times. Chat is now going to be closed.");
+                    System.out.println("CONEXÃO INCONFIÁVEL! FECHANDO");
                     System.exit(1);
                 }
 

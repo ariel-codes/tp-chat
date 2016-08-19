@@ -16,3 +16,8 @@ hs_err_pid*
 /Cliente/nbproject/private/
 /Servidor/nbproject/private/
 /CommonLib/nbproject/private/
+/CommonLib/build/
+/Servidor/build/
+/CommonLib/dist/
+/Cliente/build/
+/Servidor/dist/

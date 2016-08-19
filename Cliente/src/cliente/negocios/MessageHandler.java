@@ -1,30 +1,22 @@
 package cliente.negocios;
 
-import cliente.negocios.Client;
-import cliente.negocios.Client;
-import cliente.negocios.OnlineClient;
-import cliente.negocios.OnlineClient;
-import common.message.Message;
-import common.message.Message;
 import common.message.Message;
 import common.message.Message.Services;
 import common.utils.MsgUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
 public class MessageHandler implements Runnable {
 
-    
     public enum Nack {
 
-        ChecksumInvalido     ((byte) 0xFF),
-        ClienteSemHello    ((byte) 0xEE),
-        MalFormada    ((byte) 0xDD),
-        ClienteNIdentificado  ((byte) 0xCC),
-        ClienteJaExiste      ((byte) 0xBB),
-        NickInvalido         ((byte) 0x01),
-        NickIndisponivel    ((byte) 0x02);
+        ChecksumInvalido((byte) 0xFF),
+        ClienteSemHello((byte) 0xEE),
+        MalFormada((byte) 0xDD),
+        ClienteNIdentificado((byte) 0xCC),
+        ClienteJaExiste((byte) 0xBB),
+        NickInvalido((byte) 0x01),
+        NickIndisponivel((byte) 0x02);
 
         private final byte nackByte;
 
@@ -32,12 +24,10 @@ public class MessageHandler implements Runnable {
             this.nackByte = nackByte;
         }
 
-        
         public byte getByte() {
             return this.nackByte;
         }
 
-        
         public static Nack getNack(byte b) {
 
             Nack n = null;
@@ -86,12 +76,10 @@ public class MessageHandler implements Runnable {
 
     private static final int INT_SIZE = 4;
 
-    
     public MessageHandler(Client c) {
         client = c;
     }
 
-    
     private static void HandleMessage(Message msg) throws IOException {
 
         switch (Services.getService(msg.getService())) {
@@ -127,7 +115,6 @@ public class MessageHandler implements Runnable {
         }
     }
 
-    
     private static void Handle0x01(byte[] data) throws IOException {
 
         String newMessage;
@@ -145,7 +132,6 @@ public class MessageHandler implements Runnable {
 
     }
 
-    
     private static void Handle0x02(int size, byte[] data) {
 
         int nickSize = size - INT_SIZE;
@@ -164,7 +150,6 @@ public class MessageHandler implements Runnable {
 
     }
 
-    
     private static void Handle0x03(int size, byte[] data) {
 
         int iD;
@@ -187,7 +172,6 @@ public class MessageHandler implements Runnable {
 
     }
 
-    
     private static void Handle0x04(byte[] data) {
 
         client.lastOnlineNick = MsgUtils.byteVectorToString(data);
@@ -198,7 +182,6 @@ public class MessageHandler implements Runnable {
 
     }
 
-    
     private static void Handle0x05(int size, byte[] data) {
 
         String msg = "";
@@ -264,66 +247,26 @@ public class MessageHandler implements Runnable {
 
     }
 
-    
     private static void Handle0x0A(byte[] data) {
-
         int receivedId = MsgUtils.byteVectorToInteger(data);
-
         if (receivedId == client.getClientID()) {
             System.exit(0);
         } else {
-            stringList.add("[SERVER]: Client " + String.valueOf(receivedId) + " left the chat!\n");
+            stringList.add("[SERVER]: " + String.valueOf(receivedId) + " vazou!\n");
         }
 
     }
 
-    
     private static void Handle0x7F(byte[] data) {
-
-        String serverMessage = "";
-
-        switch (Nack.getNack(data[0])) {
-
-            case ChecksumInvalido:
-                serverMessage = "[ERROR]: Failed to send message!\n";
-                client.invalidChecksumStack();
-                break;
-
-            case ClienteSemHello:
-                serverMessage = "[ERROR]: Not greeted client!\n";
-                break;
-
-            case MalFormada:
-                serverMessage = "[ERROR]: Something went wrong! Try sending again!\n";
-                break;
-
-            case ClienteNIdentificado:
-                serverMessage = "[ERROR]: This client is not online!\n";
-                break;
-
-            case ClienteJaExiste:
-                serverMessage = "[ERROR]: This message should never appear!\n";
-                break;
-
-            case NickIndisponivel:
-                serverMessage = "[ERROR]: Someone is already using this nickname!\n";
-                break;
-
-            case NickInvalido:
-                break;
-
-        }
-
+        String serverMessage = "[ERRO]: DEU ERRADO\n";
         MessageHandler.stringList.add(serverMessage);
 
     }
 
-    
     public static final void addMessage(Message msg) {
         MessageHandler.msgList.add(msg);
     }
 
-    
     public static String getMessage() {
         return stringList.size() > 0 ? stringList.remove(0) : "";
     }
