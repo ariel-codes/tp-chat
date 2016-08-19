@@ -45,7 +45,7 @@ public class Server {
 
         while (true) {
 
-            Client client = new Client(this.server.accept()); // Keeps listening for a new connection.
+            Client client = new Client(this.server.accept()); 
             Thread t = new Thread(client);
             t.start();
 

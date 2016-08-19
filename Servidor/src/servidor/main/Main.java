@@ -21,7 +21,7 @@ public class Main {
                 server.startServer();
             } else {
 
-                // switch the options chosen by the user.
+                
                 switch (args[0]) {
                     case "-p":
                         port = Integer.parseInt(args[1]);

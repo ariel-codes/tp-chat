@@ -34,7 +34,7 @@ public class Client implements Runnable {
         this.out = new DataOutputStream(sc.getOutputStream());
         this.ClientID = ++lastID;
 
-        ClientManager.addClient(this); // Add the client to the client list.
+        ClientManager.addClient(this); 
     }
 
     public Socket getSc() {
